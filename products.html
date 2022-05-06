@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  #bottomHalf {
+    background-color: #232F3E;
+
+    color: white;
+    height: 50px
+  }
+
+  #logo {
+    height: 100px;
+    position: absolute;
+    top: -25px
+  }
+
+  #logoWrapper {
+    margin-bottom: 20px;
+    display: inline-block;
+    position: relative;
+    width: 150px;
+
+  }
+
+
+  #department {
+    font-size: 25px;
+    padding: 10px;
+    margin-left: 30px;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10px
+  }
+
+
+  #sections {
+    display: inline-block
+  }
+
+ 
+
+
+
+
+    
+
+  
+  label{
+    height: 35px;
+    font-size: 30px;
+  }
+  input{
+    border-radius: 5px;
+    height: 35px;
+    font-size: 30px;
+    border: 1px blue solid;
+  }
+
+  #showdata{
+    width: 100%;
+    display: flex;
+   flex-wrap: wrap;
+  }
+  .product{
+    position: relative;
+    margin: 1.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  width: 30%;
+  
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  }
+  .product>img{
+    width: 90%;
+  }
+
+ 
+
+
+    
+
+/*  button CSS */
+.button-73 {
+  appearance: none;
+  background-color: #FFFFFF;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #ADCFFF 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-73:hover {
+  background-color: #FFC229;
+  box-shadow: #FF6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+
+.button-73:active {
+  transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+  .button-73 {
+    font-size: 1.5rem;
+    padding: .75rem 2rem;
+  }
+}
+</style>
+
+<body>
+
+
+
+
+
+<!-- below div for navabar -->
+  <div id='bottomHalf'>
+    <div id='logoWrapper'>
+      <img id='logo' src="http://www.userlogos.org/files/logos/ArkAngel06/Amazon.png" />
+    </div>
+    <div id='department'>All PRODUCT </div>
+    <div id='department'><a   style="text-decoration: none;color: white;" href="index.html">Product Add Page</a> </div>
+    
+  </div>
+  </div>
+  
+
+<!-- TOTAL PRODUCT ON WEBAPP -->
+<div id="#counter">
+  <h1  id="pro"></h1>
+</div>
+
+<!-- Show Product -->
+<div id="showdata">
+
+</div>
+
+
+</body>
+<script>
+  // get product record form localstoge
+  if(JSON.parse(localStorage.getItem("allproduct"))==null){
+   var allproduct=[]
+  }else{
+     var allproduct=JSON.parse(localStorage.getItem("allproduct"))
+  }
+  showproduct()
+
+function showproduct(){
+
+// update number of product on webapp
+document.getElementById("pro").innerText=`Total Products :${allproduct.length}`
+
+
+  // cler page privious data
+ 
+  var predata=document.querySelectorAll('.product')
+predata.forEach(e=>e.remove())
+
+// get data from  'allproduct' named array and show into  html page
+  allproduct.forEach((element,index) => {
+  //  put data into div
+    div=document.createElement('div')
+    div.className='product'
+    div.innerHTML=` <img style="hight:400px;" src="${element.img}" alt="">
+ <h1>${element.name}</h1>
+<h3>price:${element.price} ₹</h3>`
+
+//  add remove button on cart
+ var buttton= document.createElement("button")
+buttton.className="button-73"
+buttton.id='remove'
+buttton.innerHTML='Remove'
+// functon for fire on click  remove button
+buttton.addEventListener('click',()=>{
+  allproduct.splice(index,1)
+  // after deleted data
+  localStorage.setItem("allproduct",JSON.stringify(allproduct))
+  var predata=document.querySelectorAll('.product')
+predata.forEach(e=>e.remove())
+showproduct()
+})
+div.append(buttton)
+
+
+
+// sold or not
+ var buttton= document.createElement("button")
+buttton.className="button-73"
+buttton.id='sold'
+buttton.innerHTML='Sold'
+if(element.sold){
+  // if item sold then backgroundColor will be red
+  buttton.style.backgroundColor='red'
+}else{
+  buttton.style.backgroundColor='green'
+}
+// functon for fire on click  sold button
+buttton.addEventListener('click',()=>{
+
+ if( allproduct[index].sold==false){
+  allproduct[index].sold=true
+ }else{
+  allproduct[index].sold=false
+ }
+ 
+ localStorage.setItem("allproduct",JSON.stringify(allproduct))
+  
+showproduct()
+})
+div.append(buttton)
+// inject item html page wehere id "showdata"
+document.getElementById("showdata").append(div)
+
+});
+ 
+  
+}
+</script>
+
+</html>
